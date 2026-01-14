@@ -1,0 +1,6 @@
+Flask
+transformers
+docx
+sklearn
+pandas
+datasets

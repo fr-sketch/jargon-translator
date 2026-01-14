@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Логотип" />
+        </div>
+        <a href="/" class="navbar-btn">JargonTranslator</a>
+    </nav>
+    <main class="main-content">
+        <h1>JargonTranslator</h1>
+        <form class="translate-form" method="post" enctype="multipart/form-data">
+            <label for="input-text">Введите текст для перевода:</label>
+            <div class="input-panel">
+                <div class="textarea-wrap">
+                    <textarea id="input-text" name="input_text" rows="6" placeholder="Вставьте или введите текст...">{{ input_text or '' }}</textarea>
+                    <div class="lock-overlay" aria-hidden="true">
+                        <span class="lock-icon">⛔</span>
+                    </div>
+                </div>
+                <div class="panel-actions">
+                    <label class="file-label">
+                        <input id="file-input" type="file" name="file" accept=".txt,.docx">
+                        <span>Загрузить файл</span>
+                        <span class="file-tooltip" role="tooltip">Допустимые форматы: .txt, .docx</span>
+                    </label>
+                    <select id="domain" name="domain" class="select-field">
+                        <option value="" disabled selected>— Выберите сферу —</option>
+                        <option value="IT">IT</option>
+                        <option value="ING">Инженерная</option>
+                        <option value="ECO">Экономика</option>
+                        <option value="MED">Медицина</option>
+                    </select>
+                                        <script>
+                        // Проверка выбора сферы и показ ошибки теперь только в main.js
+                                        </script>
+                    <button type="submit" class="submit-btn">Перевести</button>
+                </div>
+            </div>
+            <div class="status-row">
+                <span id="file-status" class="status-text"></span>
+                <button type="button" id="file-clear" class="file-clear" aria-label="Очистить выбранный файл">×</button>
+                {% if error %}
+                <span class="error-text">{{ error }}</span>
+                {% endif %}
+            </div>
+            <div class="loading-overlay" aria-hidden="true">
+                <div class="spinner"></div>
+                <div class="loading-text">Загрузка…</div>
+            </div>
+        </form>
+
+        {% if result %}
+        <section class="result" style="position:relative;">
+            <h2>Результат перевода</h2>
+            <button type="button" id="copy-result-btn" class="copy-btn" title="Скопировать" style="position:absolute;top:10px;right:10px;padding:6px 8px;background:transparent;border:none;cursor:pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1a2 2 0 0 1 2 2v2h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h1V2a2 2 0 0 1 2-2h9Zm3 7H5v11a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V8ZM16 2H7a1 1 0 0 0-1 1v1h11V3a1 1 0 0 0-1-1ZM4 4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h1V7a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v10h1a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4Z"/></svg>
+                <span id="copy-popup" class="copy-popup" style="display:none;position:absolute;top:-32px;right:0;background:#ff9800;color:#fff;padding:4px 12px;border-radius:6px;font-size:15px;box-shadow:0 2px 8px rgba(255,140,0,0.12);">Скопировано!</span>
+            </button>
+            <pre id="result-text">{{ result }}</pre>
+        </section>
+        {% endif %}
+    </main>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
